@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Doctor Dashboard</h2>
+{% if latest %}
+  {% for item in latest %}
+    <section class="card">
+      <h3>{{item.patient.full_name}} ({{item.patient.email}})</h3>
+      <p>Session #{{item.session.id}} — {{item.session.created_at}} — Risk: <b>{{item.session.risk_label}}</b> ({{'%.2f'|format(item.session.risk_score)}})</p>
+      <details>
+        <summary>Explanation (LIME)</summary>
+        <div class="lime" style="overflow:auto; max-height:300px; border:1px solid #ddd; padding:8px;">{{ item.lime_html|safe }}</div>
+      </details>
+    </section>
+  {% endfor %}
+{% else %}
+  <p>No sessions yet.</p>
+{% endif %}
+{% endblock %}

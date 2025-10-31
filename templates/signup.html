@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Sign up</h2>
+<form method="post">
+  <label>Full name <input name="full_name" required></label>
+  <label>Email <input name="email" type="email" required></label>
+  <label>Password <input name="password" type="password" required></label>
+  <label>Role
+    <select name="role">
+      <option value="patient">Patient</option>
+      <option value="doctor">Doctor</option>
+    </select>
+  </label>
+  <button type="submit">Create account</button>
+</form>
+{% endblock %}

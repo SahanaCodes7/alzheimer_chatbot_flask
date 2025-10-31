@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Appointments</h2>
+<table>
+  <tr><th>When</th><th>With</th></tr>
+  {% for a in appts %}
+    <tr>
+      {% if role == 'patient' %}
+        <td>{{a.slot_iso}}</td><td>Doctor #{{a.doctor_id}}</td>
+      {% else %}
+        <td>{{a.slot_iso}}</td><td>Patient #{{a.patient_id}}</td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

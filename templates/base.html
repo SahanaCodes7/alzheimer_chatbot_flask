@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}ALZ Chatbot{% endblock %}</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+
+  <!-- Chart.js (already included in your original) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <span class="brand-logo">🧠</span>
+        <span class="brand-text">ALZ Chatbot</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Main">
+  {% if not is_authenticated %}
+    <a href="/" data-nav>Home</a>
+    <a href="/login" data-nav>Login</a>
+    <a href="/signup" data-nav>Sign up</a>
+  {% elif user_role == 'patient' %}
+    <a href="/" data-nav>Home</a>
+    <a href="/patient/chat">Start Screening Chat</a> 
+  <a href="/patient/history">View My Trends</a> 
+  <a href="/appointments/book">Book Doctor</a>
+    <a class="btn btn-outline" href="/logout" data-nav>Logout</a>
+  {% elif user_role == 'doctor' %}
+    <a href="/" data-nav>Home</a>
+    <a href="/doctor/dashboard" data-nav>Doctor</a>
+    <a href="/appointments" data-nav>Appointments</a>
+    <a class="btn btn-outline" href="/logout" data-nav>Logout</a>
+  {% else %}
+    <!-- Fallback (e.g., admin) -->
+    <a href="/" data-nav>Home</a>
+    <a href="/appointments" data-nav>Appointments</a>
+    <a class="btn btn-outline" href="/logout" data-nav>Logout</a>
+  {% endif %}
+</nav>
+
+
+      <button id="menuToggle" class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© {{ 2025 }} ALZ Chatbot • Empowering early screening & care</p>
+      
+    </div>
+  </footer>
+
+  <script>
+    // Highlight active nav link
+    const links = document.querySelectorAll('[data-nav]');
+    const path = window.location.pathname.replace(/\/+$/, '');
+    links.forEach(a => {
+      const href = a.getAttribute('href').replace(/\/+$/, '');
+      if (href === path) a.classList.add('active');
+    });
+
+    // Mobile menu toggle
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.querySelector('.site-nav');
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Risk Trend</h2>
+<canvas id="trend" width="800" height="360"></canvas>
+<script>
+const data = {{ series|safe }};
+const ctx = document.getElementById('trend').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: data.map(d => new Date(d.t).toLocaleString()),
+    datasets: [{ label: 'Risk Score', data: data.map(d => d.score), tension: 0.2 }]
+  },
+  options: { scales: { y: { min: 0, max: 1 } } }
+});
+</script>
+{% endblock %}

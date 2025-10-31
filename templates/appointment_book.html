@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Book Appointment</h2>
+<form method="post">
+  <label>Doctor
+    <select name="doctor_id">
+      {% for d in doctors %}
+        <option value="{{d.id}}">{{d.full_name}} ({{d.email}})</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>ISO Slot <input name="slot_iso" placeholder="2025-09-30T10:00:00+05:30" required></label>
+  <label>Notes (optional) <textarea name="notes"></textarea></label>
+  <button type="submit">Book</button>
+</form>
+{% endblock %}

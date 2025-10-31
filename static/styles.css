@@ -1,0 +1,175 @@
+/* ============== CSS Reset & Theme ============== */
+:root{
+  --bg: #0b1020;           /* deep navy */
+  --panel: #111735;        /* card bg */
+  --panel-2: #0e1530;      /* header bg */
+  --text: #e8ecf5;
+  --muted: #a9b1c6;
+  --brand: #6aa6ff;        /* calm blue */
+  --brand-2: #8bdaff;      /* accent cyan */
+  --success: #4ad295;
+  --danger: #ff6b6b;
+  --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.03);
+  --radius: 16px;
+  --radius-lg: 22px;
+  --ring: 0 0 0 2px rgba(138, 198, 255, .25);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 700px at -10% -10%, rgba(106,166,255,.12), transparent 55%),
+    radial-gradient(1000px 600px at 110% 10%, rgba(139,218,255,.10), transparent 60%),
+    linear-gradient(180deg, #0a0f20 0%, #0b1020 100%);
+}
+
+/* ============== Layout ============== */
+.container{
+  width:min(1100px, 92vw);
+  margin-inline:auto;
+}
+
+.page-content{
+  padding: 28px 0 56px;
+}
+
+/* ============== Header & Nav ============== */
+.site-header{
+  position: sticky; top:0; z-index:10;
+  background: linear-gradient(180deg, rgba(17,23,53,.95), rgba(17,23,53,.85));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0;
+}
+.brand{
+  display:flex; align-items:center; gap:10px; text-decoration:none;
+}
+.brand-logo{
+  display:grid; place-items:center;
+  width:36px; height:36px; border-radius:12px;
+  background: radial-gradient(circle at 30% 30%, var(--brand-2), var(--brand));
+  box-shadow: var(--shadow);
+  font-size:18px;
+}
+.brand-text{
+  font-weight:700; letter-spacing:.2px; color:var(--text);
+}
+
+.site-nav{
+  display:flex; align-items:center; gap: 14px;
+}
+.site-nav a{
+  text-decoration:none; color:var(--muted);
+  padding:10px 12px; border-radius:12px;
+  transition: .2s ease;
+}
+.site-nav a:hover{ color:var(--text); background:rgba(255,255,255,.05)}
+.site-nav a.active{
+  color:#fff; background: linear-gradient(180deg, rgba(106,166,255,.25), rgba(139,218,255,.18));
+  box-shadow: var(--ring);
+}
+
+/* Mobile menu */
+.menu-toggle{
+  display:none; flex-direction:column; gap:4px;
+  width:42px; height:36px; border:0; background:transparent; cursor:pointer;
+}
+.menu-toggle span{
+  height:2px; background:var(--text); display:block; border-radius:2px;
+}
+
+@media (max-width: 840px){
+  .site-nav{
+    position:absolute; top:64px; right:16px; left:16px;
+    display:none; flex-direction:column; gap:8px;
+    padding:12px; border-radius:16px; background:var(--panel-2);
+    box-shadow: var(--shadow);
+  }
+  .site-nav.open{ display:flex }
+  .menu-toggle{ display:flex }
+}
+
+/* ============== Cards & Panels ============== */
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card .card-header{
+  padding:14px 18px; border-bottom:1px solid rgba(255,255,255,.06);
+  color:var(--muted); font-weight:600; letter-spacing:.2px;
+}
+.card .card-body{ padding:18px }
+
+/* ============== Buttons ============== */
+.btn{
+  appearance:none; border:0; cursor:pointer;
+  padding:10px 14px; border-radius:12px; font-weight:600; text-decoration:none;
+  transition: .2s ease;
+}
+.btn:hover{ transform: translateY(-1px) }
+.btn:active{ transform: translateY(0) }
+
+.btn-primary{
+  background: linear-gradient(180deg, var(--brand), #4f8df0);
+  color:#0a0f20; box-shadow: var(--shadow), var(--ring);
+}
+.btn-outline{
+  background: transparent; color:var(--text);
+  border:1px solid rgba(255,255,255,.18);
+}
+.btn-outline:hover{ background: rgba(255,255,255,.06) }
+
+/* ============== Forms ============== */
+input, select, textarea{
+  width:100%; padding:12px 14px; color:var(--text);
+  background: rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px; outline:none; transition:.2s;
+}
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(138,198,255,.6);
+  box-shadow: var(--ring);
+}
+label{ display:block; margin:10px 0 6px; color:var(--muted); font-weight:600 }
+
+/* ============== Footer ============== */
+.site-footer{
+  border-top:1px solid rgba(255,255,255,.07);
+  background: linear-gradient(180deg, rgba(17,23,53,.85), rgba(11,16,32,.95));
+}
+.footer-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0; gap:12px; flex-wrap:wrap;
+}
+.footer-inner p{ margin:0; color:var(--muted) }
+.footer-links{ display:flex; gap:12px }
+.footer-links a{ color:var(--muted); text-decoration:none }
+.footer-links a:hover{ color:var(--text) }
+
+/* ============== Helpers ============== */
+.grid{
+  display:grid; gap:16px;
+  grid-template-columns: repeat(12, 1fr);
+}
+.col-12{ grid-column: span 12 }
+.col-6{ grid-column: span 6 }
+.col-4{ grid-column: span 4 }
+@media (max-width: 900px){
+  .col-6, .col-4{ grid-column: span 12 }
+}
+
+/* Optional: nice animations for charts or content blocks */
+.fade-in{ animation: fade .5s ease both }
+@keyframes fade{
+  from{ opacity:0; transform: translateY(6px) }
+  to{ opacity:1; transform: translateY(0) }
+}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Screening Chat</h2>
+<div id="box"></div>
+<div>
+  <input id="answer" placeholder="Type your answer" />
+  <button id="send">Send</button>
+  <button id="finish">Finish</button>
+</div>
+<div id="result"></div>
+<script>
+const token = '{{ api_token }}';
+let history = [];
+let currentQ = null;
+const MAX_TOTAL = 8; // 2 per domain across 4 domains
+
+function setControls(disabledSend=false){
+  document.getElementById('send').disabled = disabledSend;
+  document.getElementById('answer').disabled = disabledSend;
+}
+
+async function post(url, body){
+  const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body:JSON.stringify(body)});
+  return r.json();
+}
+
+async function nextQ(){
+  // Stop if reached cap
+  if (history.length >= MAX_TOTAL){
+    document.getElementById('box').innerHTML += `<p><em>Reached question limit. Click Finish.</em></p>`;
+    setControls(true);
+    return;
+  }
+  const q = await post('/patient/chat/next', {state:{history}});
+  if (q.done){
+    document.getElementById('box').innerHTML += `<p><em>No more questions. Click Finish.</em></p>`;
+    setControls(true);
+    return;
+  }
+  currentQ = q;
+  document.getElementById('box').innerHTML += `<p><b>Q:</b> ${q.text}</p>`;
+}
+
+async function sendA(){
+  if (!currentQ) return;
+  const a = document.getElementById('answer').value; if(!a) return;
+  const item = await post('/patient/chat/answer', {question: currentQ, answer: a});
+  history.push(item);
+  document.getElementById('box').innerHTML += `<p><b>A:</b> ${a} <em>(score ${item.score.toFixed(2)})</em></p>`;
+  document.getElementById('answer').value = '';
+  await nextQ();
+}
+
+async function finish(){
+  if (history.length === 0){
+    document.getElementById('result').innerHTML = `<p>Please answer at least one question before finishing.</p>`;
+    return;
+  }
+  const res = await post('/patient/chat/finish', {history});
+  document.getElementById('result').innerHTML = `<h3>Risk: ${res.risk_label}</h3><p>Probs: ${res.probs.map(x=>Number(x).toFixed(2)).join(', ')}</p>`;
+  document.getElementById('box').innerHTML += `<p><em>Session saved #${res.session_id}</em></p>`;
+  setControls(true);
+}
+
+document.getElementById('send').onclick = sendA;
+document.getElementById('finish').onclick = finish;
+nextQ();
+</script>
+{% endblock %}
