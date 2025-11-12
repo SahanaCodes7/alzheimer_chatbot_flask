@@ -72,9 +72,19 @@ def create_app():
     return app
 
 # create top-level app variable so Vercel (and other WSGI loaders) can import it
-app = create_app()
+# Wrap create_app in try/except so any import/initialization errors are printed to logs.
+import traceback, sys
+
+try:
+    app = create_app()
+except Exception:
+    print("===== create_app() failed with exception =====", file=sys.stderr)
+    traceback.print_exc()
+    # re-raise so Vercel also sees function failure (and you get a 500)
+    raise
 
 if __name__ == "__main__":
     # Only use debug locally
     debug_mode = os.environ.get("FLASK_DEBUG", "0") == "1"
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=debug_mode)
+
