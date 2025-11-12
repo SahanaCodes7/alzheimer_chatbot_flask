@@ -6,10 +6,6 @@ Flask-JWT-Extended==4.6.0
 SQLAlchemy==2.0.31
 python-dotenv==1.0.1
 cryptography==43.0.1
-transformers==4.42.4
-torch>=2.2.0
 numpy==1.26.4
-scikit-learn==1.4.2
-lime==0.2.0.1
 pandas==2.2.2
-gunicorn
+gunicorn==20.1.0
