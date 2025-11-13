@@ -78,10 +78,6 @@ python app.py
 - **instance/**: Local configuration/database files.
 - **test.py**: Testing utilities.
 
-## Deployment
-
-- Vercel compatible (`vercel.json` provided).  
-- For Heroku/AWS, customize config as needed.
 
 
 ## Contact
